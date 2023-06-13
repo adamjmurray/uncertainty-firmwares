@@ -16,7 +16,7 @@ def normalize(read_u16_val):
     return 2 * clamped - 1
 
 def voltage(read_u16_val):
-    return 5 * normalize(read_u16_val);
+    return 5 * normalize(read_u16_val)
 
 
 class LPF: # butchered version of oopsy.ctrl.smooth2.gendsp from the Oopsy Max package
