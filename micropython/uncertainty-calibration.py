@@ -1,14 +1,11 @@
-import time
-import random
-from machine import Pin, ADC
-from machine import Timer
-from math import sin, pi
+from machine import ADC, Pin, Timer
 
-# print(machine.freq()) # 125000000, 125MHz, plenty for running a high sample rate, and we can probably clock faster
+# print(machine.freq()) # 125000000, 125MHz, plenty for running a high sample rate, and we can overclock
 SAMPLERATE = 96000
 
+# different modules may need different calibration
 CALIB_NEG5 = 3470
-CALIB_POS5 = 65500
+CALIB_POS5 = 65500 # I measured this at 64440, but fudged it because 0-4V were all a bit high
 CALIB_RANGE = CALIB_POS5 - CALIB_NEG5
 
 
@@ -35,50 +32,20 @@ class LPF: # butchered version of oopsy.ctrl.smooth2.gendsp from the Oopsy Max p
 
 
 cv_in = ADC(Pin(26))
-outs = [Pin(27, Pin.OUT),
-        Pin(28, Pin.OUT),
-        Pin(29, Pin.OUT),
-        Pin(0, Pin.OUT),
-        Pin(3, Pin.OUT),
-        Pin(4, Pin.OUT),
-        Pin(2, Pin.OUT),
-        Pin(1, Pin.OUT)]
+outs = [Pin(number, Pin.OUT) for number in [27,28,29,0,3,4,2,1]]
 
 num_outs = len(outs)
-
 lpf = LPF(0.05)
 
 
 def mainloop(_timer):
     raw = cv_in.read_u16()
-    normalized = raw / 65535
-    # -6.1V => 0
-    # -6V => 0.001
-    # -5V => 0.053
-    # -4V => 0.145
-    # -3V => 0.241
-    # -2V => 0.337
-    # -1V => 0.430
-    # +0V => 0.527
-    # +1V => 0.623
-    # +2V => 0.716
-    # +3V => 0.812
-    # +4V => 0.906
-    # +5V => 0.983
-    # +6V => 0.997
-    # +6.5V => 1 (normalized)
-    
-    # Attempt at calibration
-    # u16 at -5V: 3470
-    # u16 at +5V: 64440 (and then I fudged it because 0-4V was all a bit high)
-    
-    volts = voltage(raw)
-    cv = lpf.filter(normalize(raw))
+    cv = lpf.filter(normalize(raw)) # (-1, 1) range for -5V to +5V input
      
     active_gate = min(abs(int(cv * num_outs)), num_outs-1)
     
-    # Only print() at low samplerates, like SAMPLERATE=1
-    # print("raw=%i, voltage=%.2f, normalized=%.2f, active_gate=%i" % (raw, volts, cv, active_gate))
+    # Slow down the sample rate (e.g. SAMPLERATE=1) to print:
+    # print("raw=%i, voltage=%.2f, normalized=%.2f, active_gate=%i" % (raw, voltage(raw), cv, active_gate))
          
     for num in range (8):
         if num != active_gate:
