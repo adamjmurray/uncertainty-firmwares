@@ -39,7 +39,6 @@ class BipolarTrigger:
                     self.state = BipolarTrigger.STATE_ON
                     # the only time this returns anything other than zero is the moment we transition to the ON state:
                     return filtered
-
             else:
                 self.state = BipolarTrigger.STATE_OFF
 
