@@ -30,6 +30,14 @@ With Uncertainty connected via USB:
 
 Note you can call `print()` and see it in the Thonny shell. You can see the actual CV input values this way.
 
+### Running Python tests
+
+From the root of this repository (the folder containing the python_uncertainty folder), run:
+
+```bash
+python3 -m unittest discover -v micropython.test
+```
+
 ### Coding in VS Code
 
 I can't find a good, stable solution for runnning Micropython on the Uncertainty from VS Code.

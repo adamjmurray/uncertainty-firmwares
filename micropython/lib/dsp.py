@@ -28,8 +28,6 @@ class BipolarTrigger:
         filtered = self.lpf.filter(sample)
         absval = abs(filtered)
 
-        print("=> RISING: %f %s" % (absval, self.rising_thresh))
-
         if self.state == BipolarTrigger.State.OFF:
             if absval >= self.rising_thresh:
                 self.state = BipolarTrigger.State.RISING

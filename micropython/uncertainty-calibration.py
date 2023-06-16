@@ -42,7 +42,7 @@ def mainloop(_timer):
     raw = cv_in.read_u16()
     cv = lpf.filter(normalize(raw))  # (-1, 1) range for -5V to +5V input
 
-    active_gate = min(abs(int(cv * num_outs)), num_outs-1)
+    active_gate = abs(round(cv * (num_outs-1)))
 
     # Slow down the sample rate (e.g. SAMPLERATE=1) to print:
     print("raw=%i, voltage=%.2f, cv=%.2f, gate=%i" %

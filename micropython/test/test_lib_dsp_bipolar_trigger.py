@@ -1,5 +1,5 @@
 import unittest
-from dsp import BipolarTrigger
+from ..lib.dsp import BipolarTrigger
 
 
 class TestBipolarTrigger(unittest.TestCase):
