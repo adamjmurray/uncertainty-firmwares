@@ -9,18 +9,21 @@
 # This can be really nice for debugging and adding more features, but you must make sure
 # to save the changes back to the file on the computer and commit to git.
 
-from machine import ADC, Pin, Timer
+from machine import ADC, Pin
 
 cv_in = ADC(Pin(26))
 
-outs = [Pin(number, Pin.OUT) for number in [27,28,29,0,3,4,2,1]]
+outs = [Pin(number, Pin.OUT) for number in [27, 28, 29, 0, 3, 4, 2, 1]]
 
 num_outs = len(outs)
 
-def read_cv(): # => clamped range (-1, 1) over approximately -5V to +5V of input
-    normalized = (cv_in.read_u16() - 3470)/65500 # different modules may need different calibration
+
+def read_cv():  # => clamped range (-1, 1) over approximately -5V to +5V of input
+    # different modules may need different calibration
+    normalized = (cv_in.read_u16() - 3470)/65500
     clamped = min(max(normalized, 0), 1)
     return 2 * clamped - 1
+
 
 def write_out(index, value):
     try:

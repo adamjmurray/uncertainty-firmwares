@@ -29,3 +29,15 @@ With Uncertainty connected via USB:
 2. Click Run
 
 Note you can call `print()` and see it in the Thonny shell. You can see the actual CV input values this way.
+
+### Coding in VS Code
+
+I can't find a good, stable solution for runnning Micropython on the Uncertainty from VS Code.
+The Pico-W-Go extension was documented in the official Raspberry Pi docs, but I found it to be very
+buggy. It often couldn't run firmware on the device and didn't display any errors, and I eventually gave up.
+But sometimes I write my Python code in VS Code anyway for code formatters and better autocomplete and such.
+
+I followed these instructions to get things working well with Pylance:
+https://micropython-stubs.readthedocs.io/en/main/22_vscode.html
+
+And for installing stubs, I used `pip install -U micropython-rp2-stubs`
