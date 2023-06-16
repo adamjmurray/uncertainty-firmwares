@@ -1,14 +1,3 @@
-# To use:
-# - Connect Uncertainty via USB (and flash MicroPython if needed)
-# - Open this file in Thonny
-# - File -> Save as... -> RP2040 Device (if it's busy, click the stop button and try again)
-# - Save as lib.py on the device
-# - Now you can run scripts on the device that `from lib import ...`
-#
-# IMPORTANT: Once you Save as onto the device, any edits you make also save onto the device
-# This can be really nice for debugging and adding more features, but you must make sure
-# to save the changes back to the file on the computer and commit to git.
-
 from machine import ADC, Pin
 
 cv_in = ADC(Pin(26))
@@ -25,11 +14,13 @@ num_outs = len(outs)
 # --------------------------------------
 # This leads to the formula for normalizing from (-1,1) over the input -5V to +5V:
 # (cv_in.read_u16() - 3470)/(64440 - 3470)
-# However, the range is stretched out when close to +/-5V, so I fudged things through
+# However, the range is stretched out when close to +/-5V, so I adjusted it
 # trial and error to make it behave nice and linear from -3V to 3V where each
 # volt is 0.2 of normalized cv value. This led me to change 64440 to 65500
 # and arrive at the following normalization formula for read_cv().
-# Different hardware may need different calibration here.
+# Different hardware may need different calibration here, so try sending
+# your Uncertainty known voltages (from e.g. a Mordax DATA module) and
+# adjusting the numbers in read_cv() until you get good results.
 
 
 def read_cv():
@@ -40,8 +31,9 @@ def read_cv():
     return 2 * clamped - 1
 
 
-def write_out(index, value):
+def output(jack_index, value):
     try:
-        outs[index].value(value)
+        outs[jack_index].value(value)
     except IndexError:
-        print("Invalid index %s" % index)
+        print("Invalid jack index: %s. Must be between %d and %d (inclusive)." %
+              (jack_index, 0, num_outs-1))

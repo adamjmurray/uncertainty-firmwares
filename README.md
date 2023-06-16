@@ -1,14 +1,17 @@
 # Firmwares for Uncertainty
 
-Alternate firmwares for the [Uncertainty Eurorack module](https://oamodular.org/products/uncertainty).
+Alternate firmwares for the [Uncertainty Eurorack
+module](https://oamodular.org/products/uncertainty).
 
 ## Micropython Firmwares
 
 ### Setup
 
 1. Install [Thonny](https://thonny.org/)
-2. Hold down the boot button on the unpowered Uncertainty module while plugging it into your computer with USB
-3. Run Thonny and go to Preferences -> Interpreter -> Install or Update Micropython. Choose:
+2. Hold down the boot button on the unpowered Uncertainty module while plugging
+   it into your computer with USB
+3. Run Thonny and go to Preferences -> Interpreter -> Install or Update
+   Micropython. Choose:
    - Target volume probably looks like RPI-RP2, of family RP2
    - MicroPython variant: Raspberry Pi - Pico / Pico H
    - version: 1.20.0
@@ -17,33 +20,83 @@ Alternate firmwares for the [Uncertainty Eurorack module](https://oamodular.org/
    - kind of interpreter: MicroPython (RP2040)
    - port: try to detect automatically
 
-Also see https://github.com/oamodular/uncertainty#letss-write-a-simple-utility-in-micropython
+Also see
+https://github.com/oamodular/uncertainty#letss-write-a-simple-utility-in-micropython
 
-Note: Once the Micropython runtime is installed, you don't need to hold the boot button when powering on. Just connect with USB and you're good to go.
+Note: Once the Micropython runtime is installed, you don't need to hold the boot
+button when powering on. Just connect with USB and you're good to go.
 
-### Running the firmware
+### Running the demo firmware
 
 With Uncertainty connected via USB:
 
-1. Open one of the .py files in the micropython folder in Thonny
+1. Open the `demo.py` file from the `micropython` folder in Thonny
 2. Click Run
 
-Note you can call `print()` and see it in the Thonny shell. You can see the actual CV input values this way.
+Note you can call `print()` and see it in the Thonny shell. You can see the
+actual CV input values from the hardware this way. That's how I calibrated
+reading CV input, as explained in the comments in `micropython/lib/io.py`.
+
+### Running other firmwares with shared lib code
+
+`demo.py` contains everything needed to run the firmware so it's easy to get
+started. By comparison, most of the firmwares don't contain everything they
+need. That's because the `micropython/lib` folder contains resuable code used by
+many of the firmwares. It's setup this way so we don't have to copy and paste
+the same code over and over to every firmware file, which would make fixing bugs
+and adding features a nightmare.
+
+To use these firmwares, we have to first install the lib files onto the
+hardware:
+
+- Open Thonny with Uncertainty connected over USB
+- Open `micropython/lib/io.py` in Thonny
+- File -> Save as... -> RP2040 Device (if it's busy, click the stop button and
+  try again)
+- Save as `lib/io.py` on the device (create a `lib` folder and save `io.py`
+  inside it)
+- Do the same thing with `micropython/lib/dsp.py` (open, save as -> RP2040
+  Device, save it in the `lib` folder on the device)
+
+In case this README gets out-of-date, you might need to copy over anything else
+in `micropython/lib`.
+
+Now you can run the firmwares that import lib code.
+
+IMPORTANT: Once you Save as onto the device, any edits you make also save onto
+the device _and only the device_. This can be really nice for debugging and
+adding more features, but you must make sure to save the changes back to the
+file on the computer so you don't lose them! In the file tabs, Thonny shows
+[square brackets] around files that are on the device.
+
+### Using these firmwares away from the computer
+
+If you want to disconnect from the computer and use the module normally in
+your rack, use File -> Save As ... to save the firmware script as `main.py`
+on the hardware. This file runs automatically when the module powers on.
 
 ### Running Python tests
 
-From the root of this repository (the folder containing the python_uncertainty folder), run:
+From the root of this repository (the folder containing the python_uncertainty
+folder), run:
 
 ```bash
 python3 -m unittest discover -v micropython.test
 ```
 
+These tests are focused on `lib` code that doesn't depend on the micropython
+`machine` package. I'm not sure how to stub out the `machine` package for
+testing purposes, so I just tried to structure the code to avoid needing that
+package in tests.
+
 ### Coding in VS Code
 
-I can't find a good, stable solution for runnning Micropython on the Uncertainty from VS Code.
-The Pico-W-Go extension was documented in the official Raspberry Pi docs, but I found it to be very
-buggy. It often couldn't run firmware on the device and didn't display any errors, and I eventually gave up.
-But sometimes I write my Python code in VS Code anyway for code formatters and better autocomplete and such.
+I can't find a good, stable solution for runnning Micropython on the Uncertainty
+from VS Code. The Pico-W-Go extension was documented in the official Raspberry
+Pi docs, but I found it to be very buggy. It often couldn't run firmware on the
+device and didn't display any errors, and I eventually gave up. But sometimes I
+write my Python code in VS Code anyway for code formatters and better
+autocomplete and such.
 
 I followed these instructions to get things working well with Pylance:
 https://micropython-stubs.readthedocs.io/en/main/22_vscode.html
