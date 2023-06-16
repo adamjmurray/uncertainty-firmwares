@@ -24,7 +24,6 @@ class BipolarTrigger:
         self.lpf = SimpleLPF(lpf_weight)
 
     def detect(self, sample):
-
         filtered = self.lpf.filter(sample)
         absval = abs(filtered)
 
