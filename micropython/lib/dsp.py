@@ -1,10 +1,10 @@
-class SimpleLPF:
-    def __init__(self, weight=0.5):
-        self.weight = weight
+class OnePoleLowpassFilter:
+    def __init__(self, a=0.5):
+        self.a = a
         self.prev = 0
 
     def filter(self, sample):
-        self.prev = self.weight * self.prev + (1 - self.weight) * sample
+        self.prev = self.a * self.prev + (1 - self.a) * sample
         return self.prev
 
 
