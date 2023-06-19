@@ -14,20 +14,16 @@ class BipolarTrigger:
     STATE_ON = "ON"
     STATE_FALLING = "FALLING"
 
-    def __init__(self, rising_thresh=0.2, falling_thresh=0.1, rising_window=100, falling_window=100, lpf_weight=0.1):
+    def __init__(self, rising_thresh=0.2, falling_thresh=0.1, rising_window=100, falling_window=100):
         self.rising_thresh = rising_thresh
         self.falling_thresh = falling_thresh
         self.rising_window = rising_window
         self.falling_window = falling_window
         self.state = BipolarTrigger.STATE_OFF
         self.countdown = 0
-        self.lpf = SimpleLPF(lpf_weight)
 
     def detect(self, sample):
-        # TODO: I don't think this should automatically filter.
-        # The window helps handle noise
-        filtered = self.lpf.filter(sample)
-        absval = abs(filtered)
+        absval = abs(sample)
 
         if self.state == BipolarTrigger.STATE_OFF:
             if absval >= self.rising_thresh:
@@ -39,8 +35,7 @@ class BipolarTrigger:
                 self.countdown -= 1
                 if self.countdown <= 0:
                     self.state = BipolarTrigger.STATE_ON
-                    # the only time this returns anything other than zero is the moment we transition to the ON state:
-                    return filtered  # TODO: maybe just return true?
+                    return True  # True indicates the moment we transitioned to ON
             else:
                 self.state = BipolarTrigger.STATE_OFF
 
@@ -54,8 +49,9 @@ class BipolarTrigger:
                 self.countdown -= 1
                 if self.countdown <= 0:
                     self.state = BipolarTrigger.STATE_OFF
+                    return False  # False indicates the momen we transitioned to OFF
             else:
                 self.state = BipolarTrigger.STATE_ON
 
-        # if we didn't transition to ON, we always return 0
-        return 0
+        # if we didn't transition to ON or OFF, we always return None
+        return None
