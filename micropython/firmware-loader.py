@@ -7,7 +7,7 @@ from machine import Timer
 import machine
 
 # 1. Choose the firmware:
-from firmware.stepper import Stepper as Firmware
+from firmware.selector import Selector as Firmware
 firmware = Firmware()
 
 machine.freq(250_000_000)  # 2. Choose processor speed. (250_000_000 is overclocked to 2x the default)

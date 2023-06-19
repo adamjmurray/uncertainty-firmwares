@@ -6,7 +6,7 @@
 
 from machine import Timer
 from lib.io import read_volts, output
-from lib.dsp import MovingAverage, Counter
+from lib.core import MovingAverage, Counter
 
 
 SAMPLERATE = 1000

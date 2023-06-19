@@ -1,4 +1,10 @@
+# The core lib file that is designed to work on both the Uncertainty hardware and on
+# a standard computer/Python interpreter, so that unit tests can be written.
+# Anything that depends on the micropython `machine` module needs to go in another
+# file like lib/io.py and passed into functions in this file as needed.
 from collections import deque
+
+NUM_OUTS = 8
 
 
 class OnePoleLowpassFilter:

@@ -1,6 +1,5 @@
 import random
-from lib.constants import NUM_OUTS
-from lib.dsp import BipolarTrigger
+from lib.core import NUM_OUTS, BipolarTrigger
 
 
 class CellularAutomata:

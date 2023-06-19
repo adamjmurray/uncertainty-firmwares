@@ -16,7 +16,7 @@
 # 8. Confirm lib/io.py works correctly via the calibration-test.py firmware in this folder
 
 from machine import ADC, Pin, Timer
-from lib.dsp import MovingAverage, Counter
+from lib.core import MovingAverage, Counter
 
 CV_IN = ADC(Pin(26))
 
