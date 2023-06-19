@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class OnePoleLowpassFilter:
     def __init__(self, a=0.5):
         self.a = a
@@ -6,6 +9,33 @@ class OnePoleLowpassFilter:
     def filter(self, sample):
         self.prev = self.a * self.prev + (1 - self.a) * sample
         return self.prev
+
+
+class MovingAverage:
+    def __init__(self, samplecount=100):
+        self.samplecount = samplecount
+        self.queue = deque((), samplecount)
+        self.running_sum = 0
+
+    def process(self, sample):
+        num_samples = len(self.queue)
+        if num_samples == self.samplecount:
+            self.running_sum -= self.queue.popleft()
+
+        self.queue.append(sample)
+        self.running_sum += sample
+
+        return self.running_sum / num_samples if num_samples > 0 else 0
+
+
+class Counter:
+    def __init__(self, max=100):
+        self.max = max
+        self.count = 0
+
+    def process(self, _sample=0):
+        self.count = (self.count + 1) % self.max
+        return self.count == 0
 
 
 class BipolarTrigger:

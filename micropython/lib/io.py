@@ -21,23 +21,26 @@ num_outs = len(_GATE_OUTS)  # TODO: phase out in place of constants.NUM_OUTS
 # your Uncertainty known voltages (from e.g. a Mordax DATA module) and
 # adjusting the numbers in read_cv() until you get good results.
 
+# TODO: Rewrite above comment. Use calibration.py instead
 
+# Adjust these per ../ calibration.py to improve calibration for your module.
+_NEG_4V_READING = 9720
+_POS_4V_READING = 59010
+
+_difference = _POS_4V_READING - _NEG_4V_READING
+
+
+# TODO: phase this out
 def read_cv():
     # Returns a normalize input value in the clamped range (-1, 1),
     # representing approximately -5V to +5V of input voltage.
-    normalized = (_CV_IN.read_u16() - 3470)/62030
+    normalized = (_CV_IN.read_u16() - _NEG_4V_READING)/_difference
     clamped = min(max(normalized, 0), 1)
     return 2 * clamped - 1
 
 
 def read_volts():
-    # Returns a normalize input value in the clamped range (-5, 5),
-    # representing approximately -5V to +5V of input voltage.
-    # It tracks well over -4V to +4V but you may have to input 6V or 7V to hit 5.
-    # It may not be possible to hit -5.
-    normalized = (_CV_IN.read_u16() - 3470)/62030
-    clamped = min(max(normalized, 0), 1)
-    return 10 * clamped - 5
+    return 8 * (_CV_IN.read_u16() - _NEG_4V_READING)/_difference - 4
 
 
 def output(index, value):
