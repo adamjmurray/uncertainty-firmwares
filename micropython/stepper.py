@@ -34,6 +34,6 @@ while True:
 
         if offset != 0:
             # print("trigger=%.3fV, offset=%d" % (trig, offset))
+            output(active_gate, 0)
             active_gate = (active_gate + offset) % num_outs
-            for index in range(num_outs):
-                output(index, index == active_gate)
+            output(active_gate, 1)
