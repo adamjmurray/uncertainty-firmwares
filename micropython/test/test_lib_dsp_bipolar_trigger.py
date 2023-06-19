@@ -17,7 +17,3 @@ class TestBipolarTrigger(unittest.TestCase):
         self.assertEqual(trigger.detect(thresh), thresh)
         # and then go back to outputting 0:
         self.assertEqual(trigger.detect(thresh), 0)
-
-
-if __name__ == '__main__':
-    unittest.main()

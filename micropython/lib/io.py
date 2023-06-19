@@ -31,6 +31,14 @@ def read_cv():
     return 2 * clamped - 1
 
 
+def read_volts():
+    # Returns a normalize input value in the clamped range (-1, 1),
+    # representing approximately -5V to +5V of input voltage.
+    normalized = (cv_in.read_u16() - 3470)/62030
+    clamped = min(max(normalized, 0), 1)
+    return 10 * clamped - 5
+
+
 def output(jack_index, value):
     try:
         outs[jack_index].value(value)

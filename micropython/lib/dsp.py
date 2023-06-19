@@ -24,6 +24,8 @@ class BipolarTrigger:
         self.lpf = SimpleLPF(lpf_weight)
 
     def detect(self, sample):
+        # TODO: I don't think this should automatically filter.
+        # The window helps handle noise
         filtered = self.lpf.filter(sample)
         absval = abs(filtered)
 
@@ -38,7 +40,7 @@ class BipolarTrigger:
                 if self.countdown <= 0:
                     self.state = BipolarTrigger.STATE_ON
                     # the only time this returns anything other than zero is the moment we transition to the ON state:
-                    return filtered
+                    return filtered  # TODO: maybe just return true?
             else:
                 self.state = BipolarTrigger.STATE_OFF
 
