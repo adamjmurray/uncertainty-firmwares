@@ -1,7 +1,7 @@
 from lib.core import NUM_OUTS, BipolarTrigger
 
 
-class Selector:
+class ClockDivider:
 
     def __init__(self, gated=False):
         self.trigger = BipolarTrigger(rising_thresh=1, window=10)
