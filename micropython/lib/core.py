@@ -3,8 +3,24 @@
 # Anything that depends on the micropython `machine` module needs to go in another
 # file like lib/io.py and passed into functions in this file as needed.
 from collections import deque
+import random
 
 NUM_OUTS = 8
+
+
+def random_subset(indexable, subset_size):
+    size = len(indexable)
+    num_wanted = subset_size
+    num_left = len(indexable)
+    subset = []
+    for index, item in enumerate(indexable):
+        num_left = size - index
+        if random.random() < num_wanted/num_left:
+            subset.append(item)
+            num_wanted -= 1
+        if len(subset) == subset_size:
+            break
+    return subset
 
 
 class OnePoleLowpassFilter:

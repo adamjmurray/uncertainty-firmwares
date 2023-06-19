@@ -15,4 +15,4 @@ class TestBipolarTrigger(unittest.TestCase):
         # the next trigger.detect() should return the given sample:
         self.assertTrue(trigger.detect(thresh))
         # and then go back to outputting 0:
-        self.assertFalse(trigger.detect(thresh),)
+        self.assertFalse(trigger.detect(thresh))
