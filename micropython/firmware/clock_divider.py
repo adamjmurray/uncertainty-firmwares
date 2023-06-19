@@ -1,6 +1,5 @@
-import random
-from ..lib.dsp import BipolarTrigger
-from ..lib.constants import NUM_OUTS
+from lib.dsp import BipolarTrigger
+from lib.constants import NUM_OUTS
 
 
 class Selector:
