@@ -13,7 +13,7 @@
 #    In my experience it is not possible to accurately read +5V, so don't worry about it.
 #    This is analog so it won't be prefect. Decide what is good enough for your needs and move on.
 # 7. Update lib/io.py with your calibrated settings. Now all firmwares in this project are calibrated.
-# 8. Confirm lib/io.py works correctly via the calibration-test.py firmware in this folder
+# 8. Confirm lib/io.py works correctly via the calibration_test.py firmware in this folder
 
 from machine import ADC, Pin, Timer
 from lib.core import MovingAverage, Counter

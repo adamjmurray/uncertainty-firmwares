@@ -37,7 +37,7 @@ Note you can call `print()` and see it in the Thonny shell. You can see the
 actual CV input values from the hardware this way. That's how I calibrated
 reading CV input, as explained in the comments in `micropython/lib/io.py`.
 
-### Running other firmwares with shared lib code
+### Installing shared lib code
 
 `demo.py` contains everything needed to run the firmware so it's easy to get
 started. By comparison, most of the firmwares don't contain everything they
@@ -55,8 +55,8 @@ hardware:
   try again)
 - Save as `lib/io.py` on the device (create a `lib` folder and save `io.py`
   inside it)
-- Do the same thing with `micropython/lib/dsp.py` (open, save as -> RP2040
-  Device, save it in the `lib` folder on the device)
+- Do the same thing with `micropython/lib/core.py` (open, save as -> RP2040
+  Device, save it in the `lib` folder on the device as `core.py`)
 
 In case this README gets out-of-date, you might need to copy over anything else
 in `micropython/lib`.
@@ -69,11 +69,38 @@ adding more features, but you must make sure to save the changes back to the
 file on the computer so you don't lose them! In the file tabs, Thonny shows
 [square brackets] around files that are on the device.
 
+### Running the other firmwares
+
+After installing the shared lib code as explained above, we need to do the same
+thing with the firmware files. Save any files of interest in the `micropython/firmware`
+to a folder called `firmware` on the hardware.
+
+Then we can use the general purpose `firmware_loader.py` script to run any of these
+firmwares. Simply edit `firmware_-_loader.py` to load the firmware of your choice.
+
+The firmware_loader script handles some basic boilerplate for setting up the main
+loop of the firmware. All firmwares in the firmware folder are based on the simple
+interface `process(volts, output)`, which is called for every iteration of the main
+loop. It is given the current input voltage level as provided by the function in `lib/io.py`.
+It is also give the `output()` function from `lib/io.py`. You can make your own
+firmware by creating a class that implements this function.
+
+Note: The reason `output()` is not imported directly is so unit tests of the firmware can be more
+easily written by passing in a mock output function.
+
+### Calibration
+
+If the voltage levels are wrong for your hardware, take a look at the calibrate.py and
+calibration_test.py firmwares.
+
 ### Using these firmwares away from the computer
 
 If you want to disconnect from the computer and use the module normally in
 your rack, use File -> Save As ... to save the firmware script as `main.py`
 on the hardware. This file runs automatically when the module powers on.
+
+Since most firmwares are designed to run via the `firmware_loader.py` script,
+this is the one you will typically save as `main.py`.
 
 ### Running Python tests
 
