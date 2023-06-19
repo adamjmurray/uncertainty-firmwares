@@ -6,7 +6,7 @@ class CellularAutomata:
 
     interesting_rules = (22, 30, 45, 73, 75, 86, 89, 110)
 
-    def __init__(self, rule_number=110):
+    def __init__(self, output, rule_number=110):
         self.rule = rule_number
         self.randomize()
         self.trigger = BipolarTrigger(rising_thresh=1)

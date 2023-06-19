@@ -1,5 +1,6 @@
 import unittest
 from ..firmware.stepper import Stepper
+from ..lib.core import NUM_OUTS
 
 
 class MockOutput:
@@ -18,12 +19,14 @@ class MockOutput:
 class TestStepper(unittest.TestCase):
 
     def test_it_steps_forward_when_triggered(self):
-        s = Stepper()
         mock = MockOutput()
-        num_outs = MockOutput.num_outs
 
         def output(idx, val):
             return mock.output(idx, val)
+
+        s = Stepper(output)
+        self.assertEqual(mock.calls, [(idx, idx == 0) for idx in range(NUM_OUTS)])
+        mock.reset()
 
         def reset():
             mock.reset()
@@ -33,23 +36,23 @@ class TestStepper(unittest.TestCase):
         for _ in range(101):
             s.process(1, output)
 
-        self.assertEqual(mock.calls, [(0, 0), (1, 1)])
+        self.assertEqual(mock.calls, [(0, False), (1, True)])
 
         reset()
         for _ in range(101):
             s.process(2, output)
 
-        self.assertEqual(mock.calls, [(1, 0), (3, 1)])
+        self.assertEqual(mock.calls, [(1, False), (3, True)])
 
         reset()
         for _ in range(101):
             s.process(3, output)
 
-        self.assertEqual(mock.calls, [(3, 0), (6, 1)])
+        self.assertEqual(mock.calls, [(3, False), (6, True)])
 
         reset()
         for _ in range(101):
             s.process(4, output)
 
         # This time we stepped forward by 4, but after output index 7, we wrap around
-        self.assertEqual(mock.calls, [(6, 0), (2, 1)])
+        self.assertEqual(mock.calls, [(6, False), (2, True)])

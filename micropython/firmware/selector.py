@@ -3,7 +3,7 @@ from lib.core import NUM_OUTS, BipolarTrigger, random_subset
 
 class Selector:
 
-    def __init__(self, gated=False):
+    def __init__(self, _output, gated=False):
         self.trigger = BipolarTrigger(rising_thresh=1)
         self.active_gate = 0
         self.gate_indexes = list(range(NUM_OUTS))

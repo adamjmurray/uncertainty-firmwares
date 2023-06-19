@@ -7,8 +7,8 @@ from machine import Timer
 import machine
 
 # 1. Choose the firmware:
-from firmware.cellular_automata import CellularAutomata as Firmware
-firmware = Firmware()
+from firmware.stepper import Stepper as Firmware
+firmware = Firmware(output)
 
 machine.freq(250_000_000)  # 2. Choose processor speed. (250_000_000 is overclocked to 2x the default)
 

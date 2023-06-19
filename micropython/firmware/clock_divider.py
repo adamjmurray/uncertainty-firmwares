@@ -3,7 +3,7 @@ from lib.core import NUM_OUTS, BipolarTrigger
 
 class ClockDivider:
 
-    def __init__(self, gated=False):
+    def __init__(self, _output):
         self.trigger = BipolarTrigger(rising_thresh=1, window=10)
         self.divisions = [i+2 for i in range(NUM_OUTS)]
         self.reset()
