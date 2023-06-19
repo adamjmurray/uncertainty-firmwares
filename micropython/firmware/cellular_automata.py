@@ -5,6 +5,8 @@ from ..lib.dsp import BipolarTrigger
 
 class CellularAutomata:
 
+    interesting_rules = (22, 30, 45, 73, 75, 86, 89, 110)
+
     def __init__(self, rule_number):
         self.rule = rule_number
         self.randomize()
@@ -44,8 +46,12 @@ class CellularAutomata:
 
     def process(self, volts, output):
         if self.trigger.detect(volts):
-            # TODO: if volts in negative, pick a new rule,
-            # but only pick one of the interesting ones
-            self.step()
+            if volts > 0:
+                self.step()
+            else:
+                rules = CellularAutomata.interesting_rules
+                self.rule = rules[abs(int(2 * volts)) % len(rules)]
+                self.randomize()
+
             for i in range(NUM_OUTS):
                 output(i, self.state[i])
