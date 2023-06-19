@@ -5,7 +5,7 @@ from ..lib.constants import NUM_OUTS
 class Stepper:
 
     def __init__(self):
-        self.trigger = BipolarTrigger(rising_thresh=1)
+        self.trigger = BipolarTrigger(rising_thresh=1, falling_thresh=0.5)
         self.active_gate = 0
 
     def process(self, volts, output):
