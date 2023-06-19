@@ -14,11 +14,11 @@ class BipolarTrigger:
     STATE_ON = "ON"
     STATE_FALLING = "FALLING"
 
-    def __init__(self, rising_thresh=0.2, falling_thresh=0.1, rising_window=100, falling_window=100):
+    def __init__(self, rising_thresh=0.5, falling_thresh=None, window=100, rising_window=None, falling_window=None):
         self.rising_thresh = rising_thresh
-        self.falling_thresh = falling_thresh
-        self.rising_window = rising_window
-        self.falling_window = falling_window
+        self.falling_thresh = rising_thresh / 2 if falling_thresh is None else falling_thresh
+        self.rising_window = window if rising_window is None else rising_window
+        self.falling_window = window if falling_window is None else falling_window
         self.state = BipolarTrigger.STATE_OFF
         self.countdown = 0
 

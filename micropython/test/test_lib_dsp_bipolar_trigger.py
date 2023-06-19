@@ -7,7 +7,7 @@ class TestBipolarTrigger(unittest.TestCase):
     def test_emits_nonzero_once(self):
         thresh = 1
         window = 5
-        trigger = BipolarTrigger(rising_thresh=thresh, rising_window=window)
+        trigger = BipolarTrigger(rising_thresh=thresh, window=window)
         for _ in range(window):
             self.assertFalse(trigger.detect(thresh))
 

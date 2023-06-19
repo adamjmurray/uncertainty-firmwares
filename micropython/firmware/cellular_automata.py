@@ -10,7 +10,7 @@ class CellularAutomata:
     def __init__(self, rule_number):
         self.rule = rule_number
         self.randomize()
-        self.trigger = BipolarTrigger(rising_thresh=1, falling_thresh=0.5)
+        self.trigger = BipolarTrigger(rising_thresh=1)
 
     @property
     def rule(self):

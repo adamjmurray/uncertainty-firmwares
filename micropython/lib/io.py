@@ -1,10 +1,9 @@
 from machine import ADC, Pin
 
-cv_in = ADC(Pin(26))
+_CV_IN = ADC(Pin(26))
+_GATE_OUTS = [Pin(number, Pin.OUT) for number in [27, 28, 29, 0, 3, 4, 2, 1]]
 
-outs = [Pin(number, Pin.OUT) for number in [27, 28, 29, 0, 3, 4, 2, 1]]
-
-num_outs = len(outs)
+num_outs = len(_GATE_OUTS)  # TODO: phase out in place of constants.NUM_OUTS
 
 # To calibrate CV reads, I made some measurements:
 # --------------------------------------
@@ -26,22 +25,23 @@ num_outs = len(outs)
 def read_cv():
     # Returns a normalize input value in the clamped range (-1, 1),
     # representing approximately -5V to +5V of input voltage.
-    normalized = (cv_in.read_u16() - 3470)/62030
+    normalized = (_CV_IN.read_u16() - 3470)/62030
     clamped = min(max(normalized, 0), 1)
     return 2 * clamped - 1
 
 
 def read_volts():
-    # Returns a normalize input value in the clamped range (-1, 1),
+    # Returns a normalize input value in the clamped range (-5, 5),
     # representing approximately -5V to +5V of input voltage.
-    normalized = (cv_in.read_u16() - 3470)/62030
+    # It tracks well over -4V to +4V but you may have to input 6V or 7V to hit 5.
+    # It may not be possible to hit -5.
+    normalized = (_CV_IN.read_u16() - 3470)/62030
     clamped = min(max(normalized, 0), 1)
     return 10 * clamped - 5
 
 
-def output(jack_index, value):
+def output(index, value):
     try:
-        outs[jack_index].value(value)
+        _GATE_OUTS[index].value(value)
     except IndexError:
-        print("Invalid jack index: %s. Must be between %d and %d (inclusive)." %
-              (jack_index, 0, num_outs-1))
+        print("Invalid output index: %s. Must be between %d and %d (inclusive)." % (index, 0, len(_GATE_OUTS)-1))

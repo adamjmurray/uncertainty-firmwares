@@ -6,7 +6,7 @@ from ..lib.constants import NUM_OUTS
 class Selector:
 
     def __init__(self, gated=False):
-        self.trigger = BipolarTrigger(rising_thresh=1, falling_thresh=0.5)
+        self.trigger = BipolarTrigger(rising_thresh=1)
         self.active_gate = 0
         self.gate_indexes = list(range(NUM_OUTS))
         self.gated = gated
