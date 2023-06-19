@@ -28,7 +28,7 @@ class OnePoleLowpassFilter:
         self.a = a
         self.prev = 0
 
-    def filter(self, sample):
+    def process(self, sample):
         self.prev = self.a * self.prev + (1 - self.a) * sample
         return self.prev
 
