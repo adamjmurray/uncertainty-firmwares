@@ -28,28 +28,28 @@ class TestStepper(unittest.TestCase):
         def reset():
             mock.reset()
             for _ in range(101):
-                s.process(0, output, num_outs)
+                s.process(0, output)
 
         for _ in range(101):
-            s.process(1, output, num_outs)
+            s.process(1, output)
 
         self.assertEqual(mock.calls, [(0, 0), (1, 1)])
 
         reset()
         for _ in range(101):
-            s.process(2, output, num_outs)
+            s.process(2, output)
 
         self.assertEqual(mock.calls, [(1, 0), (3, 1)])
 
         reset()
         for _ in range(101):
-            s.process(3, output, num_outs)
+            s.process(3, output)
 
         self.assertEqual(mock.calls, [(3, 0), (6, 1)])
 
         reset()
         for _ in range(101):
-            s.process(4, output, num_outs)
+            s.process(4, output)
 
         # This time we stepped forward by 4, but after output index 7, we wrap around
         self.assertEqual(mock.calls, [(6, 0), (2, 1)])
