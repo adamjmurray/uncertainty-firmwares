@@ -1,3 +1,6 @@
+# A standalone demo firmware.
+# TODO: re-calibrate and cleanup
+
 from machine import ADC, Pin, Timer
 
 # print(machine.freq()) # 125000000, 125MHz, plenty for running a high sample rate, and we can overclock

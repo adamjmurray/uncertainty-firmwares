@@ -1,9 +1,6 @@
-from machine import ADC, Pin, Timer
-from lib.dsp import MovingAverage, Counter
-
-CV_IN = ADC(Pin(26))
-
-# To calibrate:
+# A firmware for calibrating an Uncertainty module.
+#
+# Procedure:
 # 1. Load this firmware onto your Uncertainty. You need lib/dsp.py installed on the microcontroller's file system (see README).
 # 2. Let your system warm up for 20+ minutes.
 # 3. Plug a device that can generate calibrated voltages (such as Mordax DATA) and connect it to Uncertainty's input.
@@ -16,6 +13,12 @@ CV_IN = ADC(Pin(26))
 #    In my experience it is not possible to accurately read +5V, so don't worry about it.
 #    This is analog so it won't be prefect. Decide what is good enough for your needs and move on.
 # 7. Update lib/io.py with your calibrated settings. Now all firmwares in this project are calibrated.
+# 8. Confirm lib/io.py works correctly via the calibration-test.py firmware in this folder
+
+from machine import ADC, Pin, Timer
+from lib.dsp import MovingAverage, Counter
+
+CV_IN = ADC(Pin(26))
 
 SAMPS_PER_SEC = 100
 
