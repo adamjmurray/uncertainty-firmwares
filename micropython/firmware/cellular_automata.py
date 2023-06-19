@@ -6,7 +6,7 @@ class CellularAutomata:
 
     interesting_rules = (22, 30, 45, 73, 75, 86, 89, 110)
 
-    def __init__(self, rule_number):
+    def __init__(self, rule_number=110):
         self.rule = rule_number
         self.randomize()
         self.trigger = BipolarTrigger(rising_thresh=1)
@@ -20,13 +20,13 @@ class CellularAutomata:
         self._rule = number
         # Convert a rule number (such as Rule 30: https://mathworld.wolfram.com/Rule30.html) to
         # a list of 8 booleans indicating the 8 possible state transitions for elemenentary cellular automata.
-        binary_representation = format(number, '0' + str(NUM_OUTS) + 'b')
+        binary_representation = ("{:0" + str(NUM_OUTS) + "b}").format(number)
         self._transitions = [x == '1' for x in list(binary_representation)]
 
     def randomize(self):
         # use '0' and '1' to represent state because we can use it to form binary numbers and
         # easily lookup the transition to use.
-        self.state = random.choices([True, False], k=NUM_OUTS)
+        self.state = [random.choice((True, False)) for _ in range(NUM_OUTS)]
         self._next_state = self.state.copy()
 
     def step(self):
