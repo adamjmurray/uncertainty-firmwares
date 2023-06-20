@@ -1,5 +1,5 @@
 import unittest
-from ..lib.core import random_subset
+from lib.core import random_subset
 
 
 class TestRandomSubset(unittest.TestCase):
