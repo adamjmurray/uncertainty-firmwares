@@ -22,7 +22,7 @@ CV_IN = ADC(Pin(26))
 
 SAMPS_PER_SEC = 100
 
-averager = MovingAverage(samplecount=SAMPS_PER_SEC)
+moving = MovingAverage(samplecount=SAMPS_PER_SEC)
 counter = Counter(max=SAMPS_PER_SEC)
 
 NEG_4V_READING = 9720
@@ -31,8 +31,8 @@ POS_4V_READING = 59010
 
 def mainloop(_):
     raw_reading = CV_IN.read_u16()
-    avg = averager.process(raw_reading)
-    if counter.process():
+    avg = moving.average(raw_reading)
+    if counter.wrapped():
         print("reading=%i, estimated volts=%.2f" %
               (avg, (raw_reading - NEG_4V_READING) / (POS_4V_READING - NEG_4V_READING) * 8 - 4))
 

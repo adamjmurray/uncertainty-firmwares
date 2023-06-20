@@ -28,7 +28,7 @@ class OnePoleLowpassFilter:
         self.a = a
         self.prev = 0
 
-    def process(self, sample):
+    def filter(self, sample):
         self.prev = self.a * self.prev + (1 - self.a) * sample
         return self.prev
 
@@ -39,7 +39,7 @@ class MovingAverage:
         self.queue = deque((), samplecount)
         self.running_sum = 0
 
-    def process(self, sample):
+    def average(self, sample):
         num_samples = len(self.queue)
         if num_samples == self.samplecount:
             self.running_sum -= self.queue.popleft()
@@ -55,7 +55,8 @@ class Counter:
         self.max = max
         self.count = 0
 
-    def process(self, _sample=0):
+    # True if the counter hit the max and wrapped around, else False
+    def wrapped(self):
         self.count = (self.count + 1) % self.max
         return self.count == 0
 

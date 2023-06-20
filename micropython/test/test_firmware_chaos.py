@@ -1,7 +1,6 @@
 from test.case import FirmwareTestCase
 from firmware.chaos import Chaos
 from lib.core import NUM_OUTS
-from test.util import repeat
 
 
 class TestChaos(FirmwareTestCase):

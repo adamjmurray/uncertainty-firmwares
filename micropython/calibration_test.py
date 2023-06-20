@@ -11,14 +11,14 @@ from lib.core import MovingAverage, Counter
 
 SAMPLERATE = 1000
 
-averager = MovingAverage(samplecount=1000)
+moving = MovingAverage(samplecount=1000)
 counter = Counter(max=SAMPLERATE)
 
 
 def mainloop(_):
     volts = read_volts()
-    avg = averager.process(volts)
-    if counter.process():
+    avg = moving.average(volts)
+    if counter.wrapped():
         print("volts=%.2f" % avg)
 
 

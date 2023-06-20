@@ -12,13 +12,13 @@ from lib.core import NUM_OUTS, OnePoleLowpassFilter
 class Scanner:
 
     def __init__(self, output, filter=OnePoleLowpassFilter(a=0.1)):
-        self.filter = filter
+        self.filter = None if filter is None else filter.filter  # store the actual filter function, not the filter
         self.active_gate = 0
         for index in range(NUM_OUTS):
             output(index, index == self.active_gate)
 
     def process(self, volts, output):
-        filtered = volts if self.filter is None else self.filter.process(volts)
+        filtered = volts if self.filter is None else self.filter(volts)
         clamped = min(max(filtered, -4), 3.5)
         active_gate = int(2 * clamped) % NUM_OUTS
         if active_gate != self.active_gate:

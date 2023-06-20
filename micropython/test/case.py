@@ -29,6 +29,9 @@ class FirmwareTestCase(unittest.TestCase):
         self.assertEqual(len(gate_states), NUM_OUTS)
         self.assertEqual(self.pop_output_calls(), [(idx, value) for (idx, value) in enumerate(gate_states)])
 
+    def assert_no_output_calls(self):
+        self.assertEqual(len(self.output_calls), 0)
+
     def trigger_on(self, firmware, volts, trigger_window_size=100):
         repeat(trigger_window_size + 1, lambda: firmware.process(volts, self.output))
 
