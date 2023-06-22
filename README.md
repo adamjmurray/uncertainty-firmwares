@@ -76,7 +76,7 @@ thing with the firmware files. Save any files of interest in the `micropython/fi
 to a folder called `firmware` on the hardware.
 
 Then we can use the general purpose `firmware_loader.py` script to run any of these
-firmwares. Simply edit `firmware_-_loader.py` to load the firmware of your choice.
+firmwares. Simply edit `firmware_loader.py` to load the firmware of your choice.
 
 The firmware_loader script handles some basic boilerplate for setting up the main
 loop of the firmware. All firmwares in the firmware folder are based on the simple
